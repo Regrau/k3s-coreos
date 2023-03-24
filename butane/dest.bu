@@ -1,0 +1,27 @@
+variant: fcos
+version: 1.5.0
+passwd:
+  users:
+    - name: root
+    # The password here is **completely unsafe** it's `yourpass` don't use it. 
+      password_hash: $6$xyz$VKswtvLoVpOLcpjDMIFXhxa8ukqqKSKHjcPBLZUk9NxWldmlFQY4stUGo.QjEhav7mp86ih2PRqYPqjkhWi5y.
+    - name: core
+      ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPA5EB+gNO9vuY0ZIiWUb+ry2dBr4qS5Lehd1Va6HzK
+      groups:
+        - wheel
+      shell: /bin/bash
+      home_dir: /home/core
+systemd:
+  units:
+    - name: k3s-installer.service
+      enabled: true
+      contents_local: install-k3s.service
+
+storage:
+  files:
+    - path: /usr/local/bin/k3s-installer
+      mode: 0755
+      contents:
+        local: k3s-installer.sh
+

@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/Relativ-IT/Butane-Schemas/Release/Butane-Schema.json": "file:///home/regrau/Documents/chipnibbles/k3s-coreos/dest.bu"
+    }
+}
