@@ -9,3 +9,7 @@ an already existing cluster.
 It is intended for homelab use on machines like the Beelink Mini S where only
 one single drive is provided. This drive will be completely wiped during the
 installation process.
+
+
+Cluster Network
+10.0.0.0/24
