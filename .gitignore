@@ -2,3 +2,4 @@
 *.iso.sig
 *.ign
 build/
+butane/resources/agent-key
