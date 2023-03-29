@@ -17,6 +17,9 @@ systemd:
     - name: k3s-installer.service
       enabled: true
       contents_local: install-k3s.service
+    - name: generate-hostname.service
+      enabled: true
+      contents_local: generate-hostname.service
 
 storage:
   files:
@@ -24,4 +27,11 @@ storage:
       mode: 0755
       contents:
         local: k3s-installer.sh
-
+    - path: /usr/local/bin/hostname-generator
+      mode: 0755
+      contents:
+        local: hostname-generator.sh
+    - path: /usr/local/etc/k3s-agent-key
+      mode: 0600
+      contents:
+        local: agent-key

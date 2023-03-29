@@ -1,0 +1,12 @@
+[Unit]
+Before=network.target
+OnFailure=emergency.target
+OnFailureJobMode=replace-irreversibly
+[Service]
+RemainAfterExit=yes
+Type=oneshot
+ExecStart=/usr/local/bin/hostname-generator
+StandardOutput=kmsg+console
+StandardError=kmsg+console
+[Install]
+WantedBy=multi-user.target
