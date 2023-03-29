@@ -17,6 +17,3 @@ else
 fi
 
 echo "dest-device: ${install_device}" > /etc/coreos/installer.d/99-custom.yaml
-
-
-# TODO add service discovery for the k3s cluster inside network
