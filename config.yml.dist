@@ -1,0 +1,7 @@
+# Example config for the server copy this file
+# and rename it to config.yml to use it in the
+# project
+interfaceName: enp2s0
+staticIp: 10.0.0.101
+gateway: 10.0.0.1
+networkPrefix: 24

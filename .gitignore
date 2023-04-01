@@ -3,3 +3,4 @@
 *.ign
 build/
 butane/resources/agent-key
+config.yml

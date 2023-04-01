@@ -1,0 +1,71 @@
+version: '3'
+
+vars:
+  AGENT_ISO: "k3s-agent.iso"
+  SERVER_ISO: "k3s-server.iso"
+
+dotenv:
+  - ".env"
+
+tasks:
+  release:
+    cmds:
+      - task: download-coreos
+      - task: compile-templates
+      - task: ignite-butane
+      - task: build-server-iso
+      - task: build-agent-iso
+
+  clean:
+    cmds:
+      - rm -rf build
+
+  download-coreos:
+    internal: true
+    cmds:
+      - test -d ./build || mkdir build
+      - |
+        podman run --security-opt label=disable --pull always --rm -v .:/data \
+        -w /data/build quay.io/coreos/coreos-installer:release download \
+        --stream next --platform metal --format iso
+
+  compile-templates:
+    internal: true
+    cmds:
+      - |
+        gomplate -d config.yml -f butane/resources/static.nmstate.gotmpl \
+        -o build/static.nmstate.yml
+
+  ignite-butane:
+    internal: true
+    cmds:
+      - |
+        podman run --rm -v .:/data -w /data \
+        quay.io/coreos/butane:latest butane/dest.bu -d butane/resources \
+        --pretty > ./build/ignition.ign
+
+  build-server-iso:
+    internal: true
+    cmds:
+      - |
+        rm -f build/{{ .SERVER_ISO }} || echo "No need to clean up"
+      - |
+        podman run --security-opt label=disable --rm -v ./:/data -w /data \
+        quay.io/coreos/coreos-installer:release iso customize \
+        --network-nmstate build/static.nmstate.yml \
+        --dest-ignition build/ignition.ign \
+        --pre-install butane/resources/pre-install.sh \
+        -o build/{{ .SERVER_ISO }} build/fedora-coreos*.iso
+
+  build-agent-iso:
+    internal: true
+    cmds:
+      - |
+        rm -f build/{{ .AGENT_ISO }} || echo "No need to clean up"
+      - |
+        podman run --security-opt label=disable --rm -v ./:/data -w /data \
+        quay.io/coreos/coreos-installer:release iso customize \
+        --dest-ignition build/ignition.ign \
+        --pre-install butane/resources/pre-install.sh \
+        -o build/{{ .AGENT_ISO }} build/fedora-coreos*.iso
+

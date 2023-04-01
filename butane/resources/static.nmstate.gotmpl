@@ -1,0 +1,20 @@
+dns-resolver:
+  config:
+    search: []
+    server:
+      - {{ (datasource "config").gateway }}
+interfaces:
+  - name: {{ (datasource "config").interfaceName }}
+    type: ethernet
+    state: up
+    ipv4:
+      address:
+        - ip: {{ (datasource "config").staticIp }}
+          prefix-length: {{ (datasource "config").networkPrefix }}
+      enabled: true
+      dhcp: false
+routes:
+    config:
+    - destination: 0.0.0.0/0
+      next-hop-address: {{ (datasource "config").gateway }}
+      next-hop-interface: {{ (datasource "config").interfaceName }}
