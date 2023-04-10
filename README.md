@@ -15,5 +15,6 @@ Cluster Network
 10.0.0.0/24
 
 dependencies:
+- podman
 - taskfile
 - gomplate

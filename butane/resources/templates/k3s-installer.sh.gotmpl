@@ -3,7 +3,7 @@
 set -x
 
 INSTALLATION_KIND="server"
-SERVER_HOST=10.0.0.101
+SERVER_HOST={{ (datasource "config").staticIp }}
 
 
 install_server() {

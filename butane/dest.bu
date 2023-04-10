@@ -16,22 +16,22 @@ systemd:
   units:
     - name: k3s-installer.service
       enabled: true
-      contents_local: install-k3s.service
+      contents_local: butane/resources/install-k3s.service
     - name: generate-hostname.service
       enabled: true
-      contents_local: generate-hostname.service
+      contents_local: butane/resources/generate-hostname.service
 
 storage:
   files:
     - path: /usr/local/bin/k3s-installer
       mode: 0755
       contents:
-        local: k3s-installer.sh
+        local: build/k3s-installer.sh
     - path: /usr/local/bin/hostname-generator
       mode: 0755
       contents:
-        local: hostname-generator.sh
+        local: butane/resources/hostname-generator.sh
     - path: /usr/local/etc/k3s-agent-key
       mode: 0600
       contents:
-        local: agent-key
+        local: butane/resources/agent-key

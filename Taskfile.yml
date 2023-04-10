@@ -33,15 +33,17 @@ tasks:
     internal: true
     cmds:
       - |
-        gomplate -d config.yml -f butane/resources/static.nmstate.gotmpl \
+        gomplate -d config.yml -f butane/resources/templates/static.nmstate.gotmpl \
         -o build/static.nmstate.yml
+        gomplate -d config.yml -f butane/resources/templates/k3s-installer.sh.gotmpl \
+        -o build/k3s-installer.sh
 
   ignite-butane:
     internal: true
     cmds:
       - |
         podman run --rm -v .:/data -w /data \
-        quay.io/coreos/butane:latest butane/dest.bu -d butane/resources \
+        quay.io/coreos/butane:latest butane/dest.bu -d ./ \
         --pretty > ./build/ignition.ign
 
   build-server-iso:
