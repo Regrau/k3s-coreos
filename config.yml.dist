@@ -1,7 +1,18 @@
-# Example config for the server copy this file
-# and rename it to config.yml to use it in the
-# project
+# Example config for the server copy this file and rename it to config.yml to
+# use it in the project
 interfaceName: enp2s0
 staticIp: 10.0.0.101
 gateway: 10.0.0.1
 networkPrefix: 24
+
+# Generate password using the following command
+# podman run -ti --rm quay.io/coreos/mkpasswd --method=yescrypt
+# example hash for password "hello"
+passwordHash: $y$j9T$9dQkqXf8IohTwm9XdTOaH1$xqFZ4/V3w1Cen02ZX8.bvCSfEizqL/tnINWWK33rQl/
+
+# Your ssh public key
+publicKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPA5EB+gNO9vuY0ZIiWUb+ry2dBr4qS5Lehd1Va6HzK
+
+# Agent Key to join k3s agents to cluster
+# create using `k3s token generate`
+agentKey: uxbl74.89ge4mwtl2wglvs4

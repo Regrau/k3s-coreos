@@ -4,10 +4,10 @@ passwd:
   users:
     - name: root
     # The password here is **completely unsafe** it's `yourpass` don't use it. 
-      password_hash: $6$xyz$VKswtvLoVpOLcpjDMIFXhxa8ukqqKSKHjcPBLZUk9NxWldmlFQY4stUGo.QjEhav7mp86ih2PRqYPqjkhWi5y.
+      password_hash: {{ (datasource "config").passwordHash }}
     - name: core
       ssh_authorized_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPA5EB+gNO9vuY0ZIiWUb+ry2dBr4qS5Lehd1Va6HzK
+        -  {{ (datasource "config").publicKey }}
       groups:
         - wheel
       shell: /bin/bash
@@ -34,4 +34,4 @@ storage:
     - path: /usr/local/etc/k3s-agent-key
       mode: 0600
       contents:
-        local: butane/resources/agent-key
+        inline: {{ (datasource "config").agentKey }}
