@@ -4,6 +4,7 @@ Wants=network-online.target
 Before=systemd-user-sessions.service
 OnFailure=emergency.target
 OnFailureJobMode=replace-irreversibly
+ConditionPathExists=!/usr/local/bin/k3s
 [Service]
 RemainAfterExit=yes
 Type=oneshot
