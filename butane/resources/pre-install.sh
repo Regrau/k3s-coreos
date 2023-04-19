@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Finds the first device on disk and sets it as the install destination for
+# Finds the first disk device and sets it as the install destination for
 # coreos.
 set -eux
 
