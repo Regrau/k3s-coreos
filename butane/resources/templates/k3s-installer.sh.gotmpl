@@ -4,10 +4,10 @@ set -x
 
 INSTALLATION_KIND="server"
 SERVER_HOST={{ (datasource "config").staticIp }}
-export INSTALL_K3S_SKIP_SELINUX=true
+export INSTALL_K3S_SKIP_SELINUX_RPM=true
 
 install_selinux_policy() {
-    rpm-ostree install https://github.com/k3s-io/k3s-selinux/releases/download/v1.2.stable.2/k3s-selinux-1.2-2.el8.noarch.rpm --apply-live
+    rpm-ostree install https://github.com/k3s-io/k3s-selinux/releases/download/v1.2.stable.2/k3s-selinux-1.2-2.el8.noarch.rpm --reboot
 }
 
 install_server() {
@@ -16,7 +16,6 @@ install_server() {
     export K3S_AGENT_TOKEN_FILE=/usr/local/etc/k3s-agent-key
     export INSTALL_K3S_EXEC=" --disable servicelb --disable traefik"
     curl -sfL https://get.k3s.io | sh -
-    k3s token create $(cat $K3S_AGENT_TOKEN_FILE)
     return 0
 }
 
@@ -32,12 +31,14 @@ if curl -sL $SERVER_HOST:6443; then
    INSTALLATION_KIND="agent"
 fi
 
-install_selinux_policy
 
 if [[ "$INSTALLATION_KIND" == "server" ]]; then
     install_server
+    k3s token create $(cat $K3S_AGENT_TOKEN_FILE)
 elif [[ "$INSTALLATION_KIND" == "agent" ]]; then
     install_agent
 else
 echo "Could not decide on installation method. Aborting"
 fi
+
+install_selinux_policy
